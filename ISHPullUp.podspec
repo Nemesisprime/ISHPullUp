@@ -12,7 +12,7 @@ DESC
   s.screenshots      = 'https://raw.githubusercontent.com/iosphere/ISHPullUp/master/SupportingFiles/screenshot.jpg'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Felix Lamouroux' => 'felix@iosphere.de' }
-  s.source           = { :git => 'https://github.com/iosphere/ISHPullUp.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/Nemesisprime/ISHPullUp.git' }
   s.social_media_url = 'https://twitter.com/iosphere'
 
   s.ios.deployment_target = '8.0'
