@@ -14,7 +14,6 @@ const CGFloat ISHPullUpViewControllerDefaultSnapThreshold = 0.25;
 const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
 
 @interface ISHPullUpViewController ()<UIGestureRecognizerDelegate>
-@property (nonatomic, weak) UIPanGestureRecognizer *panGesture;
 @property (nonatomic, weak) UITapGestureRecognizer *dimmingViewTapGesture;
 @property (nonatomic) CGFloat bottomHeight;
 @property (nonatomic) CGFloat bottomHeightAtStartOfGesture;

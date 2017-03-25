@@ -168,6 +168,8 @@ typedef struct ISHPullUpAnimationConfiguration ISHPullUpAnimationConfiguration;
  */
 @interface ISHPullUpViewController : UIViewController
 
+@property (nonatomic, weak) UIPanGestureRecognizer *panGesture;
+
 /**
  *   The contentViewController is displayed full screen behind the bottomViewController.
  *
