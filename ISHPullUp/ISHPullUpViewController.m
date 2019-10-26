@@ -52,7 +52,7 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
 }
 
 - (void)setupPropertyDefaults {
-    // set default layout mode without calling setter to avoid premature layout calls 
+    // set default layout mode without calling setter to avoid premature layout calls
     _bottomLayoutMode = ISHPullUpBottomLayoutModeShift;
     self.bottomHeight = ISHPullUpViewControllerDefaultMinimumHeight;
     self.snapToEnds = YES;
@@ -261,7 +261,7 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
             // remove dimming view if the bottomViewController was removed
             [self setDimmingViewHidden:YES height:self.bottomHeight];
         }
-        
+
         if (self.bottomHeight > self.maximumBottomHeightCached) {
             [self setState:ISHPullUpStateExpanded animated:YES];
         } else {
@@ -502,6 +502,33 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
     return heightOverMinimum < (self.dimmingThreshold * maximumHeightOverMinimum);
 }
 
+- (CGFloat)getBottomWidth {
+    switch(self.traitCollection.horizontalSizeClass) {
+        case UIUserInterfaceSizeClassUnspecified:
+        case UIUserInterfaceSizeClassCompact:
+            return CGRectGetWidth(self.contentViewController.view.bounds);
+            break;
+        case UIUserInterfaceSizeClassRegular:
+            return 350;
+            break;
+    }
+}
+- (CGFloat)getBottomXPosition {
+    switch(self.traitCollection.horizontalSizeClass) {
+        case UIUserInterfaceSizeClassUnspecified:
+        case UIUserInterfaceSizeClassCompact:
+            return 0;
+            break;
+        case UIUserInterfaceSizeClassRegular:
+            if(CGRectGetWidth(self.contentViewController.view.bounds) >= 400) {
+                return CGRectGetWidth(self.contentViewController.view.bounds) - 400;
+            } else {
+                return CGRectGetWidth(self.contentViewController.view.bounds) - 375;
+            }
+            break;
+    }
+}
+
 - (void)updateViewLayoutBottomHeight:(CGFloat)bottomHeight withSize:(CGSize)size {
     if (!self.isViewLoaded) {
         // avoid loading the view controllers' views prematurely
@@ -526,7 +553,7 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
             CGFloat expandedBottomHeight = MAX(maxHeight, clampedBottomHeight);
             CGFloat yPosition = CGRectGetMaxY(bounds) - clampedBottomHeight;
 
-            bottomFrame = CGRectMake(0, yPosition, CGRectGetWidth(bounds), expandedBottomHeight);
+            bottomFrame = CGRectMake([self getBottomXPosition], yPosition, [self getBottomWidth], expandedBottomHeight);
             break;
         }
 
@@ -534,7 +561,7 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
             clampedBottomHeight = bottomHeight;
             CGFloat yPosition = CGRectGetMaxY(bounds) - clampedBottomHeight;
 
-            bottomFrame = CGRectMake(0, yPosition, CGRectGetWidth(bounds), clampedBottomHeight);
+            bottomFrame = CGRectMake([self getBottomXPosition], yPosition, [self getBottomWidth], clampedBottomHeight);
             break;
         }
     }
@@ -564,7 +591,7 @@ const CGFloat ISHPullUpViewControllerDefaultTopMargin = 20.0;
                                   updateEdgeInsets:UIEdgeInsetsMake(0, 0, bottomInset, 0)
                           forContentViewController:self.contentViewController];
     }
-    
+
     if (self.bottomViewController && (self.bottomLayoutMode == ISHPullUpBottomLayoutModeShift)) {
         [self.sizingDelegate pullUpViewController:self
                                  updateEdgeInsets:UIEdgeInsetsMake(0, 0, self.maximumBottomHeightCached - clampedBottomHeight, 0)
